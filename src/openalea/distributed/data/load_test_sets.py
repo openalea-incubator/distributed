@@ -112,20 +112,3 @@ def load_datasets_from_irods(cache_path=None, df_meta_data=None):
             create_dir(path_l)
             write_image(path_l, im)
     return
-
-
-# if __name__ == '__main__':
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('-n', '--nb_plants', dest="nb_plants", type=int, default=0, help='number of plant to compute')
-#     parser.add_argument('-g', '--genotype', dest="genotype", type=str, default=None, help='genotype to select plants')
-#     parser.add_argument('-p', '--plant', dest="plant", type=str, default=None, help='name of the plant th select')
-#     parser.add_argument('-c', '--cache_path', dest="cache_path", type=str, default=None, help='path of the cache')
-#     parser.add_argument('-e', '--experiment', dest="experiment", type=str, default="ZA16", help='name of the experiement')
-#     parser.add_argument('--label', type=str, dest="label", default="organized", help="method of data selection")
-#
-#     args = parser.parse_args()
-#     df = load_irods_metadata(nb_plants=args.nb_plants, genotype=args.genotype, plant=args.plant, \
-#                              cache_path=args.cache_path, experiment=args.experiment, label = args.label)
-#
-#     cache_path = os.path.dirname(args.cache_path)
-#     load_datasets_from_irods(cache_path=args.cache_path, df_meta_data=df)

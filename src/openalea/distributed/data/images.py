@@ -13,57 +13,6 @@ from openalea.phenomenal.image.formats import read_image, write_image
 from openalea.distributed.cache.cache_file import create_dir
 
 
-class CloudParameter(object):
-
-    def __init__(self):
-
-        self.irods_sess = None
-
-        self.download_raw = False
-        self.download_raw_methods = 'irods'
-        self.download_raw_directory = "raw"
-        self.download_raw_exit = False
-
-        # ======================================================================
-
-        self.re_download_bin = False
-        self.download_bin_methods = 'irods'
-        self.download_bin_directory = 'bin'
-        self.compute_bin_directory = 'compute_bin'
-
-        # ======================================================================
-
-        self.recompute_voxel_grid = False
-        self.reconstruction_directory = 'reconstruction'
-        self.reconstruction_voxels_size = 4
-        self.reconsrtuction_tol = 1
-        self.reconstruction_use_image_ref = True
-        self.reconstruction_use_top_image = True
-        self.reconstruction_exit = False
-
-        # ======================================================================
-
-        self.recompute_segmentation = False
-        self.skeleton_reduce_parameter = 4
-        self.segmentation_directory = "seg"
-
-        # ======================================================================
-
-        self.mesh_directory = "mesh"
-        self.mesh_recompute = True
-
-        # ======================================================================
-
-        self.recompute_merge_analysis = False
-        self.analysis_directory = 'analysis'
-
-    def save_parameters(self, filename="cloud_parameter.json"):
-            with open(filename, 'w') as outfile:
-                d = self.__dict__.copy()
-                d.pop('irods_sess', None)
-                json.dump(d, outfile)
-
-
 # def load_image(paths, method="irods", irods_sess=None):
 #
 #     if method == "irods":

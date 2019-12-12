@@ -8,56 +8,12 @@ from alinea.phenoarch.cloud import copy_local_file_to_data_object, copy_data_obj
 from openalea.distributed.execution.data import Data
 
 
-# def create_dir_with_permission(path, desired_permission):
-#     dirpath = os.path.dirname(path)
-#     try:
-#         original_umask = os.umask(0)
-#         os.makedirs(dirpath, desired_permission)
-#     except:
-#         pass
-#     finally:
-#         os.umask(original_umask)
-
-
 def create_dir(path):
     try:
         os.makedirs(path)
     except OSError as e:
         if e.errno != errno.EEXIST:
             raise
-
-
-# def create_exp_dir(path):
-#     path_data = os.path.join(path, "data")
-#     time_path = os.path.join(path, "time")
-#     try:
-#         os.mkdir(path)
-#     except OSError:
-#         if not os.path.isdir(path):
-#             raise
-#     try:
-#         os.mkdir(path_data)
-#     except OSError:
-#         if not os.path.isdir(path_data):
-#             raise
-#     try:
-#         os.mkdir(time_path)
-#     except OSError:
-#         if not os.path.isdir(time_path):
-#             raise
-#
-#
-# def create_exp_dir_irods(path, irods_sess):
-#     path_data = os.path.join(path, "data")
-#     time_path = os.path.join(path, "time")
-#     if not irods_sess.collections.exists(path[:-1]):
-#         irods_sess.collections.create(path[:-1])
-#
-#     if not irods_sess.collections.exists(path_data[:-1]):
-#         irods_sess.collections.create(path_data[:-1])
-#
-#     if not irods_sess.collections.exists(time_path[:-1]):
-#         irods_sess.collections.create(time_path[:-1])
 
 
 def write_intermediate_data_local(data, data_path):
