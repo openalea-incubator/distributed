@@ -76,4 +76,4 @@ src/openalea/distributed/data/cache_time/
 test/
 exec/
 
-.sh
+*.sh
