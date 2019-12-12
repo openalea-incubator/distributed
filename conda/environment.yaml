@@ -1,0 +1,14 @@
+name: openalea
+channels:
+  - openalea
+  - conda-forge
+  - defaults
+dependencies:
+  - python=2.7
+  - openalea.phenomenal
+  - openalea.core
+  - pandas
+  - vtk
+  - python-irodsclient 
+  - ipyparallel
+  - dill

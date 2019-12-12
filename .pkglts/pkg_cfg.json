@@ -1,0 +1,45 @@
+{
+  "_pkglts": {
+    "auto_install": true,
+    "install_front_end": "stdout",
+    "use_prompts": false,
+    "version": 11
+  },
+  "base": {
+    "authors": [
+      [
+        "Gaetan",
+        "gaetan.heidsieck@inria.fr"
+      ]
+    ],
+    "namespace": "openalea",
+    "namespace_method": "pkg_util",
+    "pkgname": "distributed",
+    "url": null
+  },
+  "doc": {
+    "description": "A package for distributed workflows on cluster, cloud and grid",
+    "fmt": "rst",
+    "keywords": []
+  },
+  "license": {
+    "name": "cecill-c",
+    "organization": "organization",
+    "project": "{{ base.pkgname }}",
+    "year": 2017
+  },
+  "pysetup": {
+    "intended_versions": [
+      "36"
+    ],
+    "require": []
+  },
+  "test": {
+    "suite_name": "pytest"
+  },
+  "version": {
+    "major": 0,
+    "minor": 0,
+    "post": 2
+  }
+}

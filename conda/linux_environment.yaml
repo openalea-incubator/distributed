@@ -1,0 +1,26 @@
+name: distributed
+channels:
+  - openalea
+  - conda-forge
+  - defaults
+dependencies:
+  - numba
+  - python=2.7
+  - setuptools
+  - openalea.deploy
+  - openalea.core
+  - numpy
+  - scikit-learn
+  - scikit-image
+  - scipy
+  - matplotlib
+  - networkx
+  - vtk
+  - opencv
+  - nose
+  - notebook
+  - sphinx
+  - sphinx_rtd_theme
+  - pandoc
+  - ipyvolume
+  - dill
