@@ -77,3 +77,5 @@ test/
 exec/
 
 *.sh
+
+.vscode/
