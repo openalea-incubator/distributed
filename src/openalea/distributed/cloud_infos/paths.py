@@ -1,3 +1,6 @@
-CACHE_PATH = "/home/gaetan/.openalea/cached_data/"
-TMP_PATH = "/home/gaetan/.openalea/execution_data/"
-PROVENANCE_PATH = "/home/gaetan/.openalea/provenance/"
+from openalea.core.path import path
+from openalea.core import settings
+
+PROVENANCE_PATH = path(settings.get_openalea_home_dir()) / 'provenance'
+TMP_PATH = path(settings.get_openalea_home_dir()) / "execution_data"
+CACHE_PATH = path(settings.get_openalea_home_dir()) / "cached_data"
