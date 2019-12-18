@@ -31,7 +31,7 @@ class IndexCassandra():
         )"""
         session.execute(cmd)
         
-        
+            
     def close(self):
         pass
     
@@ -116,7 +116,7 @@ class IndexCassandra():
     
     
     def find_one(self, data_id):
-        query = """SELECT site, node, path FROM data_index
+        query = """SELECT path FROM data_index
         WHERE data_id=%s
         """
         return self.data_index.execute(query, [data_id])
