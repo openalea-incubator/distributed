@@ -1,5 +1,5 @@
 import hashlib
-import joblib
+# import joblib
 from openalea.distributed.execution.data import Data
 
 
@@ -43,18 +43,20 @@ def set_id(data):
 
 
 def check_task_id(func, *args, **kwargs):
-    new_data = Data(id=None, value=None, parents=args, func_name=str(func.__name__))
+    new_data = Data(id=None, value=None, parents=args, 
+                    func_name=str(func.__name__))
     return set_id(new_data)
 
 
-##############################################################################################
+##############################################################################
 # new functions
-##############################################################################################
+##############################################################################
 
 # TODO: unique by execution? or By vid
 def get_data_id(vid, pid, execution_id):
     """
-    Get the generated id of the data produced by the node (vid, pid) on the execution id
+    Get the generated id of the data produced by the node (vid, pid) on the 
+    execution id
     """
-    did = "("+str(vid)+","+str(pid),","+str(execution_id)
+    did = "("+str(vid)+","+str(pid), ","+str(execution_id)
     return did
