@@ -21,5 +21,8 @@ frag2 = {"inputs_vid":[(26,17)], "outputs_vid":[(26,0)],
 # queue = [frag1, frag2]
 queue = [frag1]*10
 
+start_workers()
+start_broker()
+
 for i, frag in enumerate(queue):
         start(client_task, i, frag, "/path/out/frag{}".format(i+1))
