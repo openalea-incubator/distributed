@@ -1,5 +1,7 @@
 from openalea.core.path import path
 from openalea.core import settings
+import os
+from os.path import expanduser
 
 # PATHS
 # files infos
@@ -8,7 +10,7 @@ TMP_PATH = path(settings.get_openalea_home_dir()) / "execution_data"
 CACHE_PATH = path(settings.get_openalea_home_dir()) / "cached_data"
 
 # infos about provenance db
-REMOTE = False
+REMOTE = True
 # Mongo
 MONGO_ADDR='127.0.0.1'
 MONGO_PORT = 27017
@@ -20,7 +22,8 @@ CASSANDRA_PORT = 9042
 
 # SSH
 PROVDB_SSH_ADDR = ""
-SSU_USERNAME="ubuntu"
-SSH_PKEY="/home/gaetan/.ssh/id_rsa"
+home = expanduser("~")
+SSH_PKEY = os.path.join(home, ".ssh", "id_rsa")
+SSH_USERNAME="ubuntu"
 # REMOTE_DB_ADDR=('127.0.0.1', 27017)
 
