@@ -52,7 +52,7 @@ class IndexCassandra():
     def start_sshtunnel(self, *args, **kwargs):
         try:
             home = expanduser("~")
-            pkey = os.join(home, ".ssh", "id_rsa")
+            pkey = os.path.join(home, ".ssh", "id_rsa")
 
             self.server = SSHTunnelForwarder(
                 ssh_address_or_host=kwargs['ssh_ip_addr'],
