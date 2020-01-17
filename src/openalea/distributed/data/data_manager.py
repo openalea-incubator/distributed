@@ -1,6 +1,6 @@
 import dill
 import os
-from openalea.distributed.cloud_infos.paths import CACHE_PATH, TMP_PATH
+from openalea.distributed.cloud_infos.cloud_infos import CACHE_PATH, TMP_PATH
 from openalea.distributed.index.id import get_id
 
 def write_data(data_id, data, path):
