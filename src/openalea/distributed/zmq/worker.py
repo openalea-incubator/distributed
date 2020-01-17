@@ -8,6 +8,7 @@ from sshtunnel import SSHTunnelForwarder
 from pymongo.errors import ConnectionFailure
 from sshtunnel import BaseSSHTunnelForwarderError
 from os.path import expanduser
+import multiprocessing
 
 from openalea.distributed.zmq.worker_config import (NB_WORKER, BROKER_ADDR, PKG, WF,
                                                     BROKER_PORT)

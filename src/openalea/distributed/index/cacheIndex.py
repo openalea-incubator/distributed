@@ -3,6 +3,8 @@ from cassandra.cluster import Cluster
 from cassandra.query import SimpleStatement
 from cassandra import ConsistencyLevel
 import os
+from os.path import expanduser
+
 from sshtunnel import SSHTunnelForwarder
 from pymongo.errors import ConnectionFailure
 from sshtunnel import BaseSSHTunnelForwarderError
@@ -49,9 +51,12 @@ class IndexCassandra():
 
     def start_sshtunnel(self, *args, **kwargs):
         try:
+            home = expanduser("~")
+            pkey = os.join(home, ".ssh", "id_rsa")
+
             self.server = SSHTunnelForwarder(
                 ssh_address_or_host=kwargs['ssh_ip_addr'],
-                ssh_pkey=kwargs['ssh_pkey'],
+                ssh_pkey=pkey,
                 ssh_username=kwargs['ssh_username'],
                 remote_bind_address=kwargs['remote_bind_address']
                 # ,
