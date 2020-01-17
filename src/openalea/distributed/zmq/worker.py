@@ -4,10 +4,15 @@ from os.path import expanduser, join
 import pexpect
 from openalea.core.pkgmanager import PackageManager
 import dill
+from sshtunnel import SSHTunnelForwarder
+from pymongo.errors import ConnectionFailure
+from sshtunnel import BaseSSHTunnelForwarderError
+from os.path import expanduser
 
-from openalea.distributed.zmq.worker_config import NB_WORKER, BROKER_ADDR, PKG, WF
+from openalea.distributed.zmq.worker_config import (NB_WORKER, BROKER_ADDR, PKG, WF,
+                                                    BROKER_PORT)
 
-def worker_task(ident, broker_addr, package, wf):
+def worker_task(ident, broker_port, broker_addr, package, wf):
     ######################""
     pkg = PackageManager()
     pkg.init()
@@ -18,7 +23,11 @@ def worker_task(ident, broker_addr, package, wf):
     ##############################""
     socket = zmq.Context().socket(zmq.REQ)
     socket.identity = u"Worker-{}".format(ident).encode("ascii")
-    socket.connect(broker_addr)
+    if str(broker_addr) == "localhost":
+        socket.connect("tcp://"+str(broker_addr)+":"+str(broker_port))
+    else:
+        start_sshtunnel(broker_addr=broker_addr, broker_port=broker_port)
+        socket.connect("tcp://"+str(broker_addr)+":"+str(server.local_bind_port))
 
     # Tell broker we're ready for work
     socket.send(b"READY")
@@ -52,8 +61,29 @@ def start(task, *args):
     process.start()
 
 
-def start_workers(nb_workers=NB_WORKER, broker_addr=BROKER_ADDR, package=PKG, wf=WF):
+def start_workers(nb_workers=NB_WORKER, broker_addr=BROKER_ADDR, package=PKG, 
+                    broker_port=BROKER_PORT, wf=WF):
     for i in range(nb_workers):
-        start(worker_task, i, nb_workers, broker_addr, package, wf)
+        start(worker_task, i, broker_port, broker_addr, package, wf)
 
 
+
+def start_sshtunnel(*args, **kwargs):
+    try:
+        home = expanduser("~")
+        pkey = os.join(home, ".ssh", "id_rsa")
+
+        server = SSHTunnelForwarder(
+            ssh_address_or_host=kwargs["broker_addr"],
+            ssh_pkey=pkey,
+            ssh_username="ubuntu",
+            remote_bind_address=("localhost", kwargs["broker_port"])
+            # ,
+            # *args,
+            # **kwargs
+        )
+
+        server.start()
+    except BaseSSHTunnelForwarderError:
+        print "Fail to connect to ssh device"
+    return server

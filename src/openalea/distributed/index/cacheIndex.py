@@ -3,14 +3,22 @@ from cassandra.cluster import Cluster
 from cassandra.query import SimpleStatement
 from cassandra import ConsistencyLevel
 import os
+from sshtunnel import SSHTunnelForwarder
+from pymongo.errors import ConnectionFailure
+from sshtunnel import BaseSSHTunnelForwarderError
 
 
 class IndexCassandra():
     def __init__(self):
         self.data_index = None
+        self.server = None
+        self.remote = None
 
-    def initialize(self):
-        cluster = Cluster()
+
+    def start_client(self, *args, **kwargs):
+        # Tunnel a port with ssh toward the cassandra server
+
+        cluster = Cluster(['127.0.0.1'], port=self.server.local_bind_port)
         session = cluster.connect()
         self.data_index = session
         KEYSPACE = "wf_metadata"
@@ -38,6 +46,36 @@ class IndexCassandra():
         cmd = """DROP TABLE data_index;
         """
         self.data_index.execute(cmd)
+
+    def start_sshtunnel(self, *args, **kwargs):
+        try:
+            self.server = SSHTunnelForwarder(
+                ssh_address_or_host=kwargs['ssh_ip_addr'],
+                ssh_pkey=kwargs['ssh_pkey'],
+                ssh_username=kwargs['ssh_username'],
+                remote_bind_address=kwargs['remote_bind_address']
+                # ,
+                # *args,
+                # **kwargs
+            )
+
+            self.server.start()
+        except BaseSSHTunnelForwarderError:
+            print "Fail to connect to ssh device"
+
+    def close_sshtunel(self):
+        return self.server.stop()
+
+
+    def initialize(self, *args, **kwargs):
+        if kwargs['remote']:
+            self.remote=True
+            self.start_sshtunnel(*args, **kwargs)
+            self.start_client(*args, **kwargs)
+        else:
+            self.remote=False
+            self.start_client(*args, **kwargs)
+
 
     def add_data(self, data_id="", path="", dict_item=""):
         # FIRST: FORMAT INPUT:

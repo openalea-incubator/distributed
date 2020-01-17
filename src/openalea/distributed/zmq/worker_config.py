@@ -2,7 +2,8 @@
 NB_WORKER = 2
 
 # broker to connect to
-BROKER_ADDR = "tcp://localhost:5560"
+BROKER_ADDR = "localhost"
+BROKER_PORT = 5560
 
 # Workflow to execute
 PKG = "__my package__"
