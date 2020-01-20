@@ -300,7 +300,7 @@ class ProvCassandra():
             wfs = self.client.execute(query)
             if wfs:
                 for wf in wfs:
-                    print "workflow: ", str(wf.worklfow), " id : ", str(wf.id)
+                    print "workflow: ", str(wf.workflow), " id : ", str(wf.id)
 
     def start_sshtunnel(self, *args, **kwargs):
         try:
