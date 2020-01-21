@@ -341,7 +341,6 @@ class ProvCassandra():
             self.client.execute(cmd)
             self.client.set_keyspace(KEYSPACE)
 
-            # TODO: MAKE THE PATH A LIST OF THE PATHS WHERE THE DATA EXISTS
             cmd = """CREATE TABLE IF NOT EXISTS task_provenance ( 
             task_id text, 
             cpu_time float,
@@ -353,7 +352,7 @@ class ProvCassandra():
             PRIMARY KEY (task_id) 
             )"""
             self.client.execute(cmd)
-            # TODO: MAKE THE PATH A LIST OF THE PATHS WHERE THE DATA EXISTS
+
             cmd = """CREATE TABLE IF NOT EXISTS wf_provenance ( 
             id text, 
             workflow text,
@@ -426,4 +425,4 @@ def start_provdb(provenance_config=None, provenance_type="Files"):
         provdb = ProvCassandra()
         provdb.init(provenance_config)
         return provdb
-        pass
+        
