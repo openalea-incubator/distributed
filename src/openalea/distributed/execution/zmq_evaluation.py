@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from openalea.distributed.zmq.worker import start_workers
 from openalea.distributed.zmq.broker import start_broker
 from openalea.distributed.zmq.client import start, client_task
