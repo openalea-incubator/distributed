@@ -1,1 +1,1 @@
-BROKER_ADDR = "tcp://localhost:5559"
+BROKER_ADDR = "tcp://[::1]:5559"

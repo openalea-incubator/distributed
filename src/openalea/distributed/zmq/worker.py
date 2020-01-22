@@ -29,7 +29,7 @@ def worker_task_fragmenteval(ident, broker_port, broker_addr, package, wf, ssh_p
         socket.connect("tcp://"+str(broker_addr)+":"+str(broker_port))
     else:
         server = start_sshtunnel(broker_addr=broker_addr, broker_port=broker_port, ssh_pkey=ssh_pkey)
-        socket.connect("tcp://localhost:"+str(server.local_bind_port))
+        socket.connect("tcp://[::1]:"+str(server.local_bind_port))
 
     # Tell broker we're ready for work
     socket.send(b"READY")
@@ -72,7 +72,8 @@ def worker_task_bruteval(ident, broker_port, broker_addr, package, wf, ssh_pkey)
         socket.connect("tcp://"+str(broker_addr)+":"+str(broker_port))
     else:
         server = start_sshtunnel(broker_addr=broker_addr, broker_port=broker_port, ssh_pkey=ssh_pkey)
-        socket.connect("tcp://localhost:"+str(server.local_bind_port))
+        socket.connect("tcp://[::1]:"+str(server.local_bind_port))
+        print("Worker-{} successfully connected to broker".format(ident).encode("ascii"))
 
     # Tell broker we're ready for work
     socket.send(b"READY")
@@ -103,12 +104,13 @@ def start(task, *args):
 
 def start_workers(type_evaluation= EVALUATION, nb_workers=NB_WORKER, broker_addr=BROKER_ADDR, package=PKG, 
                     broker_port=BROKER_PORT, wf=WF, ssh_pkey=SSH_PKEY):
+    print("Starting ", nb_workers, " workers ...")
     if type_evaluation == "FragmentEvaluation":
         for i in range(nb_workers):
-            start(worker_task_fragmenteval, i, broker_port, broker_addr, package, wf)
+            start(worker_task_fragmenteval, i, broker_port, broker_addr, package, wf, ssh_pkey)
     if type_evaluation == "BrutEvaluation":
         for i in range(nb_workers):
-            start(worker_task_bruteval, i, broker_port, broker_addr, package, wf)
+            start(worker_task_bruteval, i, broker_port, broker_addr, package, wf, ssh_pkey)
 
 
 def start_sshtunnel(*args, **kwargs):
