@@ -2,10 +2,11 @@ import zmq
 from threading import Thread
 from multiprocessing import Process
 
+from openalea.distributed.zmq.worker import start
 from openalea.distributed.zmq.broker_config import FRONTEND_ADDR, BACKEND_ADDR
 
 
-def start_broker(frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR):
+def task_broker(frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR):
     context = zmq.Context()
     frontend = context.socket(zmq.ROUTER)
     backend = context.socket(zmq.ROUTER)
@@ -54,3 +55,6 @@ def start_broker(frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR):
     backend.close()
     frontend.close()
     context.term()
+
+start_broker(frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR):
+    start(task_broker, frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR)
