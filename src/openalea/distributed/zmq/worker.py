@@ -89,7 +89,7 @@ def worker_task_bruteval(ident, broker_port, broker_addr, package, wf, ssh_pkey)
         
         try:
             wf.node(33).set_input(0, num_p)
-            wf.eval(record_provenance=False)
+            wf.eval(record_provenance=True)
             socket.send_multipart([address, b"", b"success"])
             
         except:

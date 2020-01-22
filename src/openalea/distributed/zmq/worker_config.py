@@ -3,7 +3,7 @@ EVALUATION = "BrutEvaluation"
 NB_WORKER = 8
 
 # broker to connect to
-BROKER_ADDR = "134.158.247.83"
+BROKER_ADDR = "localhost"
 BROKER_PORT = 5560
 
 # Workflow to execute
