@@ -72,7 +72,7 @@ def worker_task_bruteval(ident, broker_port, broker_addr, package, wf, ssh_pkey)
         socket.connect("tcp://"+str(broker_addr)+":"+str(broker_port))
     else:
         server = start_sshtunnel(broker_addr=broker_addr, broker_port=broker_port, ssh_pkey=ssh_pkey)
-        socket.connect("tcp://[::1]:"+str(server.local_bind_port))
+        socket.connect("tcp://127.0.0.1:"+str(server.local_bind_port))
         print("Worker-{} successfully connected to broker".format(ident).encode("ascii"))
 
     # Tell broker we're ready for work

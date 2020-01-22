@@ -1,1 +1,1 @@
-BROKER_ADDR = "tcp://[::1]:5559"
+BROKER_ADDR = "tcp://127.0.0.1:5559"
