@@ -57,4 +57,4 @@ def task_broker(frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR):
     context.term()
 
 def start_broker(frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR):
-    start(task_broker, frontend_addr=FRONTEND_ADDR, backend_addr=BACKEND_ADDR)
+    start(task_broker, FRONTEND_ADDR, BACKEND_ADDR)
