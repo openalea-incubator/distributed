@@ -2,7 +2,7 @@
 import time
 from openalea.distributed.zmq.worker import start_workers
 from openalea.distributed.zmq.broker import start_broker
-from openalea.distributed.zmq.client import start, client_task
+from openalea.distributed.zmq.client import start, client_task_bruteval
 
 #  fragments 
 # frag1 = {"inputs_vid":[], "outputs_vid":[(27,0)],
