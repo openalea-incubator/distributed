@@ -14,7 +14,7 @@ from openalea.distributed.zmq.worker_config import (NB_WORKER, BROKER_ADDR, PKG,
                                                     BROKER_PORT)
 from openalea.distributed.cloud_infos.cloud_infos import SSH_PKEY
 
-def worker_task(ident, broker_port, broker_addr, package, wf, ssh_pkey):
+def worker_task_fragmenteval(ident, broker_port, broker_addr, package, wf, ssh_pkey):
     ######################""
     pkg = PackageManager()
     pkg.init()
@@ -51,6 +51,44 @@ def worker_task(ident, broker_port, broker_addr, package, wf, ssh_pkey):
                             record_provenance=False,
                             fragment_infos=frag,
                             tmp_path=out_path)
+            socket.send_multipart([address, b"", b"success"])
+            
+        except:
+            socket.send_multipart([address, b"", b"fail"])
+        
+    
+def worker_task_bruteval(ident, broker_port, broker_addr, package, wf, ssh_pkey):
+    ######################""
+    pkg = PackageManager()
+    pkg.init()
+    wf_factory = pkg[package][wf]
+    wf = wf_factory.instantiate()
+    wf.eval_algo = "BrutEvaluation"
+
+    ##############################""
+    socket = zmq.Context().socket(zmq.REQ)
+    socket.identity = u"Worker-{}".format(ident).encode("ascii")
+    if str(broker_addr) == "localhost":
+        socket.connect("tcp://"+str(broker_addr)+":"+str(broker_port))
+    else:
+        server = start_sshtunnel(broker_addr=broker_addr, broker_port=broker_port, ssh_pkey=ssh_pkey)
+        socket.connect("tcp://localhost:"+str(server.local_bind_port))
+
+    # Tell broker we're ready for work
+    socket.send(b"READY")
+
+    # Do work
+    while True:
+        address, empty, request = socket.recv_multipart()
+    #     print("{}: {}".format(socket.identity.decode("ascii"),
+    #                           request.decode("ascii")))
+        
+        request = dill.loads(request)
+        num_p = request.get("num_plant", 0)
+        
+        try:
+            wf.node(33).set_input(0, num_p)
+            wf.eval(record_provenance=False)
             socket.send_multipart([address, b"", b"success"])
             
         except:
