@@ -4,7 +4,7 @@ from openalea.distributed.zmq.worker import start_workers
 from openalea.distributed.zmq.broker import start_broker
 from openalea.distributed.zmq.client import start, client_task
 
-# fragments 
+#  fragments 
 # frag1 = {"inputs_vid":[], "outputs_vid":[(27,0)],
 #                   'cached_data':{}, 
 #                    'input_data': {}}
@@ -23,5 +23,5 @@ time.sleep(5)
 # for i, frag in enumerate(queue):
 #         start(client_task, i, frag, "/path/out/frag{}".format(i+1))
 
-for i in range(5):
-        start(client_task, i, i)
+for i in range(1):
+        start(client_task_bruteval, i, i)

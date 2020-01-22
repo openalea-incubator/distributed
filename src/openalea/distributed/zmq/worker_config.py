@@ -1,3 +1,4 @@
+EVALUATION = "BrutEvaluation"
 # number of worker
 NB_WORKER = 8
 

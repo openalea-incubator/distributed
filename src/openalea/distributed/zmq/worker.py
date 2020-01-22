@@ -11,7 +11,7 @@ from os.path import expanduser
 import multiprocessing
 
 from openalea.distributed.zmq.worker_config import (NB_WORKER, BROKER_ADDR, PKG, WF,
-                                                    BROKER_PORT)
+                                                    BROKER_PORT, EVALUATION)
 from openalea.distributed.cloud_infos.cloud_infos import SSH_PKEY
 
 def worker_task_fragmenteval(ident, broker_port, broker_addr, package, wf, ssh_pkey):
@@ -101,11 +101,14 @@ def start(task, *args):
     process.start()
 
 
-def start_workers(nb_workers=NB_WORKER, broker_addr=BROKER_ADDR, package=PKG, 
+def start_workers(type_evaluation= EVALUATION, nb_workers=NB_WORKER, broker_addr=BROKER_ADDR, package=PKG, 
                     broker_port=BROKER_PORT, wf=WF, ssh_pkey=SSH_PKEY):
-    for i in range(nb_workers):
-        start(worker_task, i, broker_port, broker_addr, package, wf)
-
+    if type_evaluation == "FragmentEvaluation":
+        for i in range(nb_workers):
+            start(worker_task_fragmenteval, i, broker_port, broker_addr, package, wf)
+    if type_evaluation == "BrutEvaluation":
+        for i in range(nb_workers):
+            start(worker_task_bruteval, i, broker_port, broker_addr, package, wf)
 
 
 def start_sshtunnel(*args, **kwargs):
