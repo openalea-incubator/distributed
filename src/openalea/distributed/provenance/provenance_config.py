@@ -4,7 +4,7 @@ from openalea.core import settings
 import os
 from os.path import expanduser
 
-REMOTE_PROV = True
+REMOTE_PROV = False
 
 # Files
 PROVENANCE_PATH = path(settings.get_openalea_home_dir()) / 'provenance'
