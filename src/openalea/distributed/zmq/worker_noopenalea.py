@@ -342,13 +342,13 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
 
 
         try:
-            # # Connect to ProvDB
-            # from openalea.distributed.provenance.provenanceDB import start_provdb
-            # provdb = start_provdb(provenance_type="NoOpenAlea")
+            # Connect to ProvDB
+            from openalea.distributed.provenance.provenanceDB import start_provdb
+            provdb = start_provdb(provenance_type="NoOpenAlea")
 
-            # # Connect to IndexDB
-            # from openalea.distributed.index.indexDB import start_index
-            # index = start_index()
+            # Connect to IndexDB
+            from openalea.distributed.index.indexDB import start_index
+            index = start_index()
 
             # # Start the Data:
             # VAR_THAT_CHANGE_IDs = num_p
