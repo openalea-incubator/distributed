@@ -350,13 +350,13 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             from openalea.distributed.index.indexDB import start_index
             index = start_index()
 
-            # # Start the Data:
-            # VAR_THAT_CHANGE_IDs = num_p
-            # rawdata = raw_images()
-            # t1 = time.time() - start
-            # data_plant = Data(id=str(VAR_THAT_CHANGE_IDs), value=rawdata, dltime=t1, workflow=VAR_THAT_CHANGE_IDs)
-            # save_infos(prov=provdb, data=data_plant, wf=VAR_THAT_CHANGE_IDs)
-            # calibration = calibrations()
+            # Start the Data:
+            VAR_THAT_CHANGE_IDs = num_p
+            rawdata = raw_images()
+            t1 = time.time() - start
+            data_plant = Data(id=str(VAR_THAT_CHANGE_IDs), value=rawdata, dltime=t1, workflow=VAR_THAT_CHANGE_IDs)
+            save_infos(prov=provdb, data=data_plant, wf=VAR_THAT_CHANGE_IDs)
+            calibration = calibrations()
             # images_bin = wrapper_data(binarize, data_plant)
             # save_infos(prov=provdb, data=images_bin, wf=VAR_THAT_CHANGE_IDs)
             # image_views = wrapper_data(get_image_views, images_bin, calibration)
