@@ -194,9 +194,9 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
                 "workflow":str(VAR_THAT_CHANGE_IDs),
                 "time_init":start,
                 "time_end":end,
-                "data":None,
-                "parameters":None,
-                "executions":None}
+                "data":"",
+                "parameters":"",
+                "executions":""}
             provdb.add_wf_item(item)
 
             socket.send_multipart([address, b"", b"success"])
@@ -351,7 +351,7 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             index = start_index()
 
             # Start the Data:
-            # VAR_THAT_CHANGE_IDs = num_p
+            VAR_THAT_CHANGE_IDs = num_p
             # rawdata = raw_images()
             # t1 = time.time() - start
             # data_plant = Data(id=str(VAR_THAT_CHANGE_IDs), value=rawdata, dltime=t1, workflow=VAR_THAT_CHANGE_IDs)
