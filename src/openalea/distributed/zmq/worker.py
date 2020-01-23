@@ -1,6 +1,7 @@
 import zmq
 from zmq import ssh
 from os.path import expanduser, join
+import os
 import pexpect
 from openalea.core.pkgmanager import PackageManager
 import dill
