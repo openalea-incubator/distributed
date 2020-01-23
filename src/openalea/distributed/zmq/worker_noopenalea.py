@@ -79,6 +79,40 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
         (maize_segmentation, graph_from_voxel_grid, segment_reduction, skeletonize,
         maize_analysis)
 
+        def calibrations(plant_number=1):
+        data_directory = "/mnt/plant_6/calibration/"
+
+        calibration = dict()
+        for id_camera in ["side", "top"]:
+            calibration[id_camera] = CalibrationCamera.load(
+                os.path.join(data_directory,
+                            "calibration_camera_{}.json".format(id_camera)))
+
+        return calibration
+
+        def path_images(plant_number=1, dtype="raw"):
+        # data_directory = pkg_resources.resource_filename(
+        #     'openalea.phenomenal', 'data/plant_{}/{}/'.format(
+        #         plant_number, dtype))
+
+        data_directory = "/mnt/plant_6/raw/"
+
+        d = collections.defaultdict(dict)
+        for id_camera in ["side", "top"]:
+            filenames = glob.glob(os.path.join(data_directory, id_camera, '*.png'))
+            for filename in filenames:
+                angle = int(os.path.basename(filename).split('.png')[0])
+                d[id_camera][angle] = filename
+        return d
+
+        def raw_images(plant_number=1):
+        d = path_raw_images(plant_number)
+        for id_camera in d:
+            for angle in d[id_camera]:
+                img = cv2.imread(d[id_camera][angle], cv2.IMREAD_COLOR)
+                d[id_camera][angle] = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        return d
+
 
         def save_infos(prov=None, data=None, wf=0):
             item = {
