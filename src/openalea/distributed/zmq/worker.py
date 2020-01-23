@@ -59,11 +59,15 @@ def worker_task_fragmenteval(ident, broker_port, broker_addr, package, wf, ssh_p
     
 def worker_task_bruteval(ident, broker_port, broker_addr, package, wf, ssh_pkey):
     ######################""
-    pkg = PackageManager()
-    pkg.init()
-    wf_factory = pkg[package][wf]
-    wf = wf_factory.instantiate()
-    wf.eval_algo = "BrutEvaluation"
+    # pkg = PackageManager()
+    # pkg.init()
+    # wf_factory = pkg[package][wf]
+    # wf = wf_factory.instantiate()
+    # wf.eval_algo = "BrutEvaluation"
+    home = expanduser("~")
+    wfpath = os.path.join(home, "workflow")
+    with open(wfpath, "r") as f:
+        wf = dill.load(f)
 
     ##############################""
     socket = zmq.Context().socket(zmq.REQ)
