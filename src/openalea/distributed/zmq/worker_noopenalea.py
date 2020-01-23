@@ -48,10 +48,7 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
         
         request = dill.loads(request)
         num_p = request.get("num_plant", 0)
-        
-        from openalea.phenomenal.display.image import (
-            show_image
-        )
+
         import os
         import ast
         import cv2
@@ -74,9 +71,8 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
 
         # phenomenal analysis imprts,  
         from openalea.phenomenal_wralea.phenoarch import \
-        (get_image_views, show_images, binarize, get_side_image_projection_list, 
-        show_mesh)
-        from openalea.phenomenal.display import show_segmentation
+        (get_image_views, binarize, get_side_image_projection_list)
+        # from openalea.phenomenal.display import show_segmentation
         from openalea.phenomenal.multi_view_reconstruction import reconstruction_3d
         from openalea.phenomenal.mesh import meshing
         from openalea.phenomenal.segmentation import \
