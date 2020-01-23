@@ -4,7 +4,7 @@ from openalea.core import settings
 import os
 from os.path import expanduser
 
-REMOTE_INDEX = True
+REMOTE_INDEX = False
 
 # Files
 INDEX_PATH = path(settings.get_openalea_home_dir()) / 'index'
