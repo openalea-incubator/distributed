@@ -67,7 +67,7 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
         from openalea.distributed.execution.data import Data, set_id, get_task_id
 
         # load input raw
-        from openalea.phenomenal.data.data import raw_images, calibrations
+        # from openalea.phenomenal.data.data import raw_images, calibrations
 
         # phenomenal analysis imprts,  
         from openalea.phenomenal_wralea.phenoarch import \
