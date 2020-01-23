@@ -347,8 +347,8 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             provdb = start_provdb(provenance_type="NoOpenAlea")
 
             # Connect to IndexDB
-            from openalea.distributed.index.indexDB import start_index
-            index = start_index()
+            # from openalea.distributed.index.indexDB import start_index
+            # index = start_index()
 
             # Start the Data:
             time.sleep(5)
