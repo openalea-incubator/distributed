@@ -197,7 +197,7 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
                 "data":None,
                 "parameters":None,
                 "executions":None}
-            provdb.add_wf_item()
+            provdb.add_wf_item(item)
 
             socket.send_multipart([address, b"", b"success"])
                     
@@ -385,7 +385,7 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
                 "data":None,
                 "parameters":None,
                 "executions":None}
-            provdb.add_wf_item()
+            provdb.add_wf_item(item)
 
             socket.send_multipart([address, b"", b"success"])
                     
