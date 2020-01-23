@@ -194,7 +194,7 @@ class IndexCassandra():
         pass
 
     def delete(self):
-        cmd = """DROP TABLE data_index;
+        cmd = """DROP TABLE IF EXISTS data_index;
         """
         self.data_index.execute(cmd)
 
@@ -328,7 +328,19 @@ class IndexCassandra():
     def all_files_id(self):
         query = """SELECT data_id FROM data_index
         """
-        return self.data_index.execute(query)            
+        return self.data_index.execute(query)   
+
+    def is_in(self, data_id):
+        query = """SELECT path FROM data_index
+        WHERE data_id=%s
+        """
+        r = self.data_index.execute(query, [data_id])
+        for i in r:
+            if i:
+                return i.path[0]
+            else:
+                return False
+
 
 
 def get_site(path):

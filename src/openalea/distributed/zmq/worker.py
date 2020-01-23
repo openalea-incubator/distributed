@@ -14,6 +14,7 @@ import multiprocessing
 from openalea.distributed.zmq.worker_config import (NB_WORKER, BROKER_ADDR, PKG, WF,
                                                     BROKER_PORT, EVALUATION)
 from openalea.distributed.cloud_infos.cloud_infos import SSH_PKEY
+from openalea.distributed.zmq.worker_noopenalea import worker_task_classicexec
 
 def worker_task_fragmenteval(ident, broker_port, broker_addr, package, wf, ssh_pkey):
     ######################""
@@ -60,15 +61,15 @@ def worker_task_fragmenteval(ident, broker_port, broker_addr, package, wf, ssh_p
     
 def worker_task_bruteval(ident, broker_port, broker_addr, package, wf, ssh_pkey):
     ######################""
-    # pkg = PackageManager()
-    # pkg.init()
-    # wf_factory = pkg[package][wf]
-    # wf = wf_factory.instantiate()
-    # wf.eval_algo = "BrutEvaluation"
-    home = expanduser("~")
-    wfpath = os.path.join(home, "workflow")
-    with open(wfpath, "r") as f:
-        wf = dill.load(f)
+    pkg = PackageManager()
+    pkg.init()
+    wf_factory = pkg[package][wf]
+    wf = wf_factory.instantiate()
+    wf.eval_algo = "BrutEvaluation"
+    # home = expanduser("~")
+    # wfpath = os.path.join(home, "workflow")
+    # with open(wfpath, "r") as f:
+    #     wf = dill.load(f)
 
     ##############################""
     socket = zmq.Context().socket(zmq.REQ)
@@ -99,8 +100,8 @@ def worker_task_bruteval(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             
         except:
             socket.send_multipart([address, b"", b"fail"])
-        
 
+        
 def start(task, *args):
     process = multiprocessing.Process(target=task, args=args)
     process.daemon = True
@@ -116,6 +117,9 @@ def start_workers(type_evaluation= EVALUATION, nb_workers=NB_WORKER, broker_addr
     if type_evaluation == "BrutEvaluation":
         for i in range(nb_workers):
             start(worker_task_bruteval, i, broker_port, broker_addr, package, wf, ssh_pkey)
+    if type_evaluation == "NoOpenAlea":
+        for i in range(nb_workers):
+            start(worker_task_classicexec, i, broker_port, broker_addr, package, wf, ssh_pkey)
 
 
 def start_sshtunnel(*args, **kwargs):

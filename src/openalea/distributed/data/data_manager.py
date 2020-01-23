@@ -45,3 +45,81 @@ def check_data_to_load(vid, pid, fragment_infos):
         return fragment_infos['input_data'][(vid, pid)]
     return None
 
+
+def write_intermediate_data_local(data, data_path):
+    create_dir(os.path.dirname(data_path))
+    try :
+        with open(data_path, "wb") as f:
+            dill.dump(data.value, f)
+    except IOError as e:
+        print e
+    except:
+        print "ERROR : value to save not a Data type"
+        print "Fail to save : ", data, " to : ", data_path
+    return os.path.getsize(data_path)
+
+def load_intermediate_data_local(data_path):
+    with open(data_path, "rb") as f:
+        intermediate_data = dill.load(f)
+    new_data = Data(id=os.path.basename(data_path), value=intermediate_data)
+    return new_data
+
+def write_intermediate_data_ssh(data, dname, data_path, sftp_client=None):
+#     create_dir(os.path.dirname(data_path))
+#     create the file on local
+    from os.path import expanduser
+    home = expanduser("~")
+    tmp_path = os.path.join(home, data_path[5:])
+    create_dir(os.path.dirname(tmp_path))
+    
+    dsize = write_intermediate_data_local(data, tmp_path)
+#     dname = os.path.basename(data_path)
+    cache_path = os.path.join("/mnt/openalea_cache/data", dname)
+#     create_dir_ssh(os.path.dirname(cache_path), sftp_client)
+    sftp_client.put(tmp_path, cache_path)
+    
+    #delete tmp_file
+    if os.path.isfile(tmp_path):
+        os.remove(tmp_path)
+    else:  ## Show an error ##
+        print("Error: %s file not found" % tmp_path)
+    return dsize
+
+
+def load_intermediate_data_ssh(data_path, sftp_client=None):
+#     get file on local then load
+    from os.path import expanduser
+    home = expanduser("~")
+    tmp_path = os.path.join(home, data_path[5:])
+    sftp_client.get(data_path, tmp_path)
+    
+    new_data = load_intermediate_data_local(tmp_path)
+    
+    #delete tmp_file
+    if os.path.isfile(tmp_path):
+        os.remove(tmp_path)
+    else:  ## Show an error ##
+        print("Error: %s file not found" % tmp_path)
+
+    return new_data
+
+
+def write_intermediate_data(data, dname, data_path, method="local", sftp_client=None):
+    if method == "ssh":
+        return write_intermediate_data_ssh(data, dname, data_path, sftp_client=sftp_client)
+
+    if method == "local":
+        return write_intermediate_data_local(data, data_path)
+    
+    if method == "sshfs":
+        return write_intermediate_data_local(data, data_path)
+
+
+def load_intermediate_data(dname, data_path, method="local", sftp_client=None):
+    if method == "ssh":
+        return load_intermediate_data_ssh(dname, data_path, sftp_client=sftp_client)
+    if method == "local":
+        return load_intermediate_data_local(data_path)
+    
+    if method == "sshfs":
+        return load_intermediate_data_local(data_path)
