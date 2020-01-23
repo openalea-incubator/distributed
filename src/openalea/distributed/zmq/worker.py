@@ -108,21 +108,21 @@ def start(task, *args):
     process.start()
 
 
-def start_workers(type_evaluation= EVALUATION, nb_workers=NB_WORKER, broker_addr=BROKER_ADDR, package=PKG, 
+def start_workers(vm_id = "", type_evaluation= EVALUATION, nb_workers=NB_WORKER, broker_addr=BROKER_ADDR, package=PKG, 
                     broker_port=BROKER_PORT, wf=WF, ssh_pkey=SSH_PKEY):
     print("Starting ", nb_workers, " workers ...")
     if type_evaluation == "FragmentEvaluation":
         for i in range(nb_workers):
-            start(worker_task_fragmenteval, i, broker_port, broker_addr, package, wf, ssh_pkey)
+            start(worker_task_fragmenteval, vm_id+str(i), broker_port, broker_addr, package, wf, ssh_pkey)
     if type_evaluation == "BrutEvaluation":
         for i in range(nb_workers):
-            start(worker_task_bruteval, i, broker_port, broker_addr, package, wf, ssh_pkey)
+            start(worker_task_bruteval, vm_id+str(i), broker_port, broker_addr, package, wf, ssh_pkey)
     if type_evaluation == "NoOpenAlea":
         for i in range(nb_workers):
-            start(worker_task_classicexec, i, broker_port, broker_addr, package, wf, ssh_pkey)
+            start(worker_task_classicexec, vm_id+str(i), broker_port, broker_addr, package, wf, ssh_pkey)
     if type_evaluation == "FakeExec":
         for i in range(nb_workers):
-            start(worker_task_fakeexec, i, broker_port, broker_addr, package, wf, ssh_pkey)
+            start(worker_task_fakeexec, vm_id+str(i), broker_port, broker_addr, package, wf, ssh_pkey)
 
 
 def start_sshtunnel(*args, **kwargs):
