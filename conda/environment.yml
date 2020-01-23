@@ -192,7 +192,6 @@ dependencies:
   - openalea.deploy=2.1.6=py27_0
   - openalea.grapheditor=2.0.1=0
   - openalea.misc=2.0.0=1
-  - openalea.phenomenal=1.7.0.beta=phenomenal
   - openalea.visualea=2.0.1=he5339bf_0
   - openalea.vpltk=2.0.2=py27_0
 
