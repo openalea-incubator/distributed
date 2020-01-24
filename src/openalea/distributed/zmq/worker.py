@@ -14,7 +14,8 @@ import multiprocessing
 from openalea.distributed.zmq.worker_config import (NB_WORKER, BROKER_ADDR, PKG, WF,
                                                     BROKER_PORT, EVALUATION)
 from openalea.distributed.cloud_infos.cloud_infos import SSH_PKEY
-from openalea.distributed.zmq.worker_noopenalea import worker_task_classicexec, worker_task_fakeexec
+from openalea.distributed.zmq.worker_noopenalea import (worker_task_classicexec, worker_task_fakeexec,
+worker_task_fakeload, worker_task_greedyexec)
 
 def worker_task_fragmenteval(ident, broker_port, broker_addr, package, wf, ssh_pkey):
     ######################""
@@ -123,6 +124,12 @@ def start_workers(vm_id = "", type_evaluation= EVALUATION, nb_workers=NB_WORKER,
     if type_evaluation == "FakeExec":
         for i in range(nb_workers):
             start(worker_task_fakeexec, vm_id+str(i), broker_port, broker_addr, package, wf, ssh_pkey)
+    if type_evaluation == "FakeLoad":
+        for i in range(nb_workers):
+            start(worker_task_fakeload, vm_id+str(i), broker_port, broker_addr, package, wf, ssh_pkey)
+    if type_evaluation == "NoOpenAleaGreedy":
+        for i in range(nb_workers):
+            start(worker_task_greedyexec, vm_id+str(i), broker_port, broker_addr, package, wf, ssh_pkey)
 
 
 def start_sshtunnel(*args, **kwargs):
