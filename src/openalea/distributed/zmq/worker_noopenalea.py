@@ -334,7 +334,7 @@ def worker_task_greedyexec(ident, broker_port, broker_addr, package, wf, ssh_pke
 
                     print('ADD to cache')
                     # get name of file: 
-                    pathcache = "/home/gaetan/openalea/"
+                    pathcache = "/home/ubuntu/openalea/"
                     dname = hashlib.md5(str(id_task)).hexdigest()
                     pathcache = os.path.join(pathcache, dname)
                     write_intermediate_data_local(tmp_data, pathcache)
@@ -729,7 +729,7 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
 
                 print('ADD to cache')
                 # get name of file: 
-                pathcache = "/home/gaetan/openalea/"
+                pathcache = "/home/ubuntu/openalea/"
                 dname = hashlib.md5(str(id_task)).hexdigest()
                 pathcache = os.path.join(pathcache, dname)
                 write_intermediate_data_local(tmp_data, pathcache)
