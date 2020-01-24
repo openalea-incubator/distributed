@@ -334,11 +334,11 @@ def worker_task_greedyexec(ident, broker_port, broker_addr, package, wf, ssh_pke
 
                     print('ADD to cache')
                     # get name of file: 
-                    pathcache = "/home/ubuntu/openalea/"
-                    dname = hashlib.md5(str(data.id)).hexdigest()
+                    pathcache = "/home/gaetan/openalea/"
+                    dname = hashlib.md5(str(id_task)).hexdigest()
                     pathcache = os.path.join(pathcache, dname)
                     write_intermediate_data_local(tmp_data, pathcache)
-                    index.add_data(data_id=str(data.id), path=pathcache)
+                    index.add_data(data_id=str(id_task), path=pathcache)
 
         #     dsize=0
             dsize = getsize(tmp_data.value)
@@ -643,7 +643,7 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
         from openalea.distributed.metadata.data_size import getsize
 
         from openalea.distributed.execution.data import Data, set_id, get_task_id
-        from openalea.distributed.data.data_manager import write_intermediate_data_local, load_intermediate_data_local
+        from openalea.distributed.data.data_manager import write_intermediate_data_local, load_intermediate_data_local, create_dir
 
         # load input raw
         from openalea.phenomenal.data.data import raw_images, calibrations
@@ -729,7 +729,7 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
 
                 print('ADD to cache')
                 # get name of file: 
-                pathcache = "/home/ubuntu/openalea/"
+                pathcache = "/home/gaetan/openalea/"
                 dname = hashlib.md5(str(data.id)).hexdigest()
                 pathcache = os.path.join(pathcache, dname)
                 write_intermediate_data_local(tmp_data, pathcache)

@@ -2,6 +2,8 @@ import dill
 import os
 from openalea.distributed.cloud_infos.cloud_infos import CACHE_PATH, TMP_PATH
 from openalea.distributed.index.id import get_id
+import errno
+
 
 def write_data(data_id, data, path):
     """
@@ -123,3 +125,10 @@ def load_intermediate_data(dname, data_path, method="local", sftp_client=None):
     
     if method == "sshfs":
         return load_intermediate_data_local(data_path)
+
+def create_dir(path):
+    try:
+        os.makedirs(path)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
