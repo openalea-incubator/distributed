@@ -1,6 +1,0 @@
-{
-    "python.pythonPath": "/home/gaetan/miniconda2/envs/openalea_scheduling/bin/python",
-    "python.linting.pylintEnabled": false,
-    "python.linting.enabled": false,
-    "python.linting.flake8Enabled": false
-}
