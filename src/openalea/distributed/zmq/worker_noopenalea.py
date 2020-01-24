@@ -85,7 +85,7 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
             item = {
             "task_id":str(data.id),
             "cpu_time":data.cpu_time,
-            "dl_time":data.dltime,
+            "dltime":data.dltime,
             "n_input":data.n_input,
             "n_output":data.n_output,
             "node":data.node,
@@ -274,7 +274,7 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             item = {
             "task_id":str(data.id),
             "cpu_time":data.cpu_time,
-            "dl_time":data.dltime,
+            "dltime":data.dltime,
             "n_input":data.n_input,
             "n_output":data.n_output,
             "node":data.node,
@@ -282,7 +282,6 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             "outputs":str(data.outputs),
             "workflow":str(wf),
             }
-
             prov.add_task_item(item)
             
         #####     execute wrapper func   ####"""""""""""""""""""""""""""""""""""""""""""

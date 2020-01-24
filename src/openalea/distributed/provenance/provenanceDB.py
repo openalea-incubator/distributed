@@ -217,11 +217,12 @@ class ProvCassandra():
 
     def add_task_item(self, item, *args, **kwargs):
         # FIRST: FORMAT INPUT:
-        task_id = item['task_id']
-        cpu_time = item['cpu_time']
-        n_input = item['n_input']
-        n_output = item['n_output']
-        node = item['node']
+        task_id = str(item['task_id'])
+        cpu_time = float(item['cpu_time'])
+        dltime =  float(item['dltime'])
+        n_input = float(item['n_input'])
+        n_output = float(item['n_output'])
+        node = float(item['node'])
         outputs = json.dumps(item['outputs'])
         inputs = json.dumps(item['inputs'])
         # IF there is an entry for this task: update
@@ -243,16 +244,16 @@ class ProvCassandra():
             node, outputs, inputs)
             VALUES (%(t_id)s, %(cpu_t)s, %(n_i)s, %(n_o)s, %(n)s, %(out)s, %(i)s)
             """, consistency_level=ConsistencyLevel.ONE)
-            self.client.execute(query, dict(t_id=task_id, cpu_t=cpu_time,
+            self.client.execute(query, dict(t_id=task_id, cpu_t=cpu_time, \
             n_i=n_input, n_o=n_output, n=node, out=outputs, i=inputs))
 
 
     def add_wf_item(self, item, *args, **kwargs):
         # FIRST: FORMAT INPUT:
-        id = item['id']
-        workflow = item['workflow']
-        time_init = item['time_init']
-        time_end = item['time_end']
+        id = str(item['id'])
+        workflow = str(item['workflow'])
+        time_init = float(item['time_init'])
+        time_end = float(item['time_end'])
         data = json.dumps(item['data'])
         parameters = json.dumps(item['parameters'])
         executions = json.dumps(item['executions'])
@@ -452,13 +453,13 @@ class ProvCassandraNOOPENALEA():
 
     def add_task_item(self, item, *args, **kwargs):
         # FIRST: FORMAT INPUT:
-        task_id = item['task_id']
-        cpu_time = item['cpu_time']
-        dltime = item['dltime']
-        n_input = item['n_input']
-        n_output = item['n_output']
-        node = item['node']
-        workflow = item['workflow']
+        task_id = str(item['task_id'])
+        cpu_time = float(item['cpu_time'])
+        dltime = float(item['dltime'])
+        n_input = float(item['n_input'])
+        n_output = float(item['n_output'])
+        node = float(item['node'])
+        workflow = str(item['workflow'])
         outputs = json.dumps(item['outputs'])
         inputs = json.dumps(item['inputs'])
         # IF there is an entry for this task: update
@@ -476,20 +477,19 @@ class ProvCassandraNOOPENALEA():
 
         else:
             query = SimpleStatement("""
-            INSERT INTO task_provenance (task_id, cpu_time, dltime, n_input, n_output,
-            node, outputs, inputs, workflow)
-            VALUES (%(t_id)s, %(cpu_t)s, %(dlt)s %(n_i)s, %(n_o)s, %(n)s, %(out)s, %(i)s, %(wf)s)
+            INSERT INTO task_provenance (task_id, cpu_time, dltime, n_input, n_output, node, outputs, inputs, workflow)
+            VALUES (%(t_id)s, %(cpu_t)s, %(dlt)s, %(n_i)s, %(n_o)s, %(n)s, %(out)s, %(i)s, %(wf)s)
             """, consistency_level=ConsistencyLevel.ONE)
-            self.client.execute(query, dict(t_id=task_id, cpu_t=cpu_time, dlt=dltime,
+            self.client.execute(query, dict(t_id=task_id, cpu_t=cpu_time, dlt=dltime, \
             n_i=n_input, n_o=n_output, n=node, out=outputs, i=inputs, wf=workflow))
 
 
     def add_wf_item(self, item, *args, **kwargs):
         # FIRST: FORMAT INPUT:
-        id = item['id']
-        workflow = item['workflow']
-        time_init = item['time_init']
-        time_end = item['time_end']
+        id = str(item['id'])
+        workflow = str(item['workflow'])
+        time_init = float(item['time_init'])
+        time_end = float(item['time_end'])
         data = json.dumps(item['data'])
         parameters = json.dumps(item['parameters'])
         executions = json.dumps(item['executions'])

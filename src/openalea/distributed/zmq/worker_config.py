@@ -1,6 +1,6 @@
 EVALUATION = "BrutEvaluation"
 # number of worker
-NB_WORKER = 8
+NB_WORKER = 4
 
 # broker to connect to
 BROKER_ADDR = "localhost"
