@@ -316,29 +316,29 @@ def worker_task_greedyexec(ident, broker_port, broker_addr, package, wf, ssh_pke
                 tmp_data = Data(id=id_task, value=None)
                 dsize = 0
             else:
-            # download data from refs:
-            for data in args:
-                if isinstance(data, Data):
-                    if not data.value:
-                        try:
-                            path_to_data = index.is_in(data.id)
-                            tmp_data = load_intermediate_data_local(data_path=path_to_data)
-                            data.value = tmp_data.value
-                        except:
-                            pass
-                        
-                # Compute
-                print("COMPUTE DATA")
-                tmp_data = execute(func, *args, **kwargs)
-                dtime = time.time()
+                # download data from refs:
+                for data in args:
+                    if isinstance(data, Data):
+                        if not data.value:
+                            try:
+                                path_to_data = index.is_in(data.id)
+                                tmp_data = load_intermediate_data_local(data_path=path_to_data)
+                                data.value = tmp_data.value
+                            except:
+                                pass
+                            
+                    # Compute
+                    print("COMPUTE DATA")
+                    tmp_data = execute(func, *args, **kwargs)
+                    dtime = time.time()
 
-                print('ADD to cache')
-                # get name of file: 
-                pathcache = "/home/ubuntu/openalea/"
-                dname = hashlib.md5(str(data.id)).hexdigest()
-                pathcache = os.path.join(pathcache, dname)
-                write_intermediate_data_local(tmp_data, pathcache)
-                index.add_data(data_id=str(data.id), path=pathcache)
+                    print('ADD to cache')
+                    # get name of file: 
+                    pathcache = "/home/ubuntu/openalea/"
+                    dname = hashlib.md5(str(data.id)).hexdigest()
+                    pathcache = os.path.join(pathcache, dname)
+                    write_intermediate_data_local(tmp_data, pathcache)
+                    index.add_data(data_id=str(data.id), path=pathcache)
 
         #     dsize=0
             dsize = getsize(tmp_data.value)
@@ -711,21 +711,21 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
                 tmp_data = Data(id=id_task, value=None)
                 dsize = 0
             else:
-            # download data from refs:
-            for data in args:
-                if isinstance(data, Data):
-                    if not data.value:
-                        try:
-                            path_to_data = index.is_in(data.id)
-                            tmp_data = load_intermediate_data_local(data_path=path_to_data)
-                            data.value = tmp_data.value
-                        except:
-                            pass
-                        
-                # Compute
-                print("COMPUTE DATA")
-                tmp_data = execute(func, *args, **kwargs)
-                dtime = time.time()
+                # download data from refs:
+                for data in args:
+                    if isinstance(data, Data):
+                        if not data.value:
+                            try:
+                                path_to_data = index.is_in(data.id)
+                                tmp_data = load_intermediate_data_local(data_path=path_to_data)
+                                data.value = tmp_data.value
+                            except:
+                                pass
+                            
+                    # Compute
+                    print("COMPUTE DATA")
+                    tmp_data = execute(func, *args, **kwargs)
+                    dtime = time.time()
 
                 print('ADD to cache')
                 # get name of file: 
