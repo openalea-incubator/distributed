@@ -344,6 +344,7 @@ class ProvCassandra():
             cmd = """CREATE TABLE IF NOT EXISTS task_provenance ( 
             task_id text, 
             cpu_time float,
+            dltime float,
             n_input float,
             n_output float,
             node float,
@@ -453,6 +454,7 @@ class ProvCassandraNOOPENALEA():
         # FIRST: FORMAT INPUT:
         task_id = item['task_id']
         cpu_time = item['cpu_time']
+        dltime = item['dltime']
         n_input = item['n_input']
         n_output = item['n_output']
         node = item['node']
@@ -474,11 +476,11 @@ class ProvCassandraNOOPENALEA():
 
         else:
             query = SimpleStatement("""
-            INSERT INTO task_provenance (task_id, cpu_time, n_input, n_output,
+            INSERT INTO task_provenance (task_id, cpu_time, dltime, n_input, n_output,
             node, outputs, inputs, workflow)
-            VALUES (%(t_id)s, %(cpu_t)s, %(n_i)s, %(n_o)s, %(n)s, %(out)s, %(i)s, %(wf)s)
+            VALUES (%(t_id)s, %(cpu_t)s, %(dlt)s %(n_i)s, %(n_o)s, %(n)s, %(out)s, %(i)s, %(wf)s)
             """, consistency_level=ConsistencyLevel.ONE)
-            self.client.execute(query, dict(t_id=task_id, cpu_t=cpu_time,
+            self.client.execute(query, dict(t_id=task_id, cpu_t=cpu_time, dlt=dltime,
             n_i=n_input, n_o=n_output, n=node, out=outputs, i=inputs, wf=workflow))
 
 
@@ -579,6 +581,7 @@ class ProvCassandraNOOPENALEA():
             cmd = """CREATE TABLE IF NOT EXISTS task_provenance ( 
             task_id text, 
             cpu_time float,
+            dltime float,
             n_input float,
             n_output float,
             node float,

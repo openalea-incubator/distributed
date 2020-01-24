@@ -56,6 +56,7 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
         import sys
         import errno
         import dill
+        import uuid
 
         import hashlib
         import joblib
@@ -84,6 +85,7 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
             item = {
             "task_id":str(data.id),
             "cpu_time":data.cpu_time,
+            "dl_time":data.dltime,
             "n_input":data.n_input,
             "n_output":data.n_output,
             "node":data.node,
@@ -191,7 +193,7 @@ def worker_task_classicexec(ident, broker_port, broker_addr, package, wf, ssh_pk
             end = time.time()
             print("execution over")
             item = {"id":str(VAR_THAT_CHANGE_IDs),
-                "workflow":str(VAR_THAT_CHANGE_IDs),
+                "workflow":uuid.uuid4(),
                 "time_init":start,
                 "time_end":end,
                 "data":"",
@@ -272,6 +274,7 @@ def worker_task_fakeexec(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             item = {
             "task_id":str(data.id),
             "cpu_time":data.cpu_time,
+            "dl_time":data.dltime,
             "n_input":data.n_input,
             "n_output":data.n_output,
             "node":data.node,
