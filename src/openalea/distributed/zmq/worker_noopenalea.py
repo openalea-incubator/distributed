@@ -730,10 +730,10 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
                 print('ADD to cache')
                 # get name of file: 
                 pathcache = "/home/gaetan/openalea/"
-                dname = hashlib.md5(str(data.id)).hexdigest()
+                dname = hashlib.md5(str(id_task)).hexdigest()
                 pathcache = os.path.join(pathcache, dname)
                 write_intermediate_data_local(tmp_data, pathcache)
-                index.add_data(data_id=str(data.id), path=pathcache)
+                index.add_data(data_id=str(id_task), path=pathcache)
 
         #     dsize=0
             dsize = getsize(tmp_data.value)
