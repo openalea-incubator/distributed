@@ -50,6 +50,11 @@ def check_data_to_load(vid, pid, fragment_infos):
 
 
 def write_intermediate_data_local(data, data_path):
+    # to remove
+
+    np = data_path[0:13] + data_path[30::]
+    data_path = np
+
     create_dir(os.path.dirname(data_path))
     try :
         with open(data_path, "wb") as f:
@@ -62,6 +67,9 @@ def write_intermediate_data_local(data, data_path):
     return os.path.getsize(data_path)
 
 def load_intermediate_data_local(data_path):
+    np = data_path[0:13] + data_path[30::]
+    data_path = np
+    
     with open(data_path, "rb") as f:
         intermediate_data = dill.load(f)
     new_data = Data(id=os.path.basename(data_path), value=intermediate_data)

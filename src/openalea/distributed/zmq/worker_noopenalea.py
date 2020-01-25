@@ -338,7 +338,7 @@ def worker_task_greedyexec(ident, broker_port, broker_addr, package, wf, ssh_pke
 
                     print('ADD to cache')
                     # get name of file: 
-                    pathcache = "/home/ubuntu/data/mydatalocal/openalea/"
+                    pathcache = "/home/ubuntu/openalea/"
                     dname = hashlib.md5(str(id_task)).hexdigest()
                     pathcache = os.path.join(pathcache, dname)
                     write_intermediate_data_local(tmp_data, pathcache)
@@ -746,7 +746,7 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
                 # index.add_data(data_id=str(id_task), path=pathcache)
             # fake write: 
             print('rewrite')
-            pathcache = "/home/ubuntu/data/mydatalocal/openalea/"
+            pathcache = "/home/ubuntu/openalea/"
             dname = hashlib.md5(str(id_task)).hexdigest()
             pathcache = os.path.join(pathcache, dname)
             write_intermediate_data_local(tmp_data, pathcache)
@@ -771,7 +771,7 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             index = start_index()
 
             # Start the Data:
-            # time.sleep(1)
+            time.sleep(1)
             VAR_THAT_CHANGE_IDs = num_p
             rawdata = raw_images()
             t1 = time.time() - start
