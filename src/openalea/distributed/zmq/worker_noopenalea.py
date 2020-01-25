@@ -242,6 +242,7 @@ def worker_task_greedyexec(ident, broker_port, broker_addr, package, wf, ssh_pke
     from openalea.phenomenal.segmentation import \
     (maize_segmentation, graph_from_voxel_grid, segment_reduction, skeletonize,
     maize_analysis)
+    import re
     ##############################""
     socket = zmq.Context().socket(zmq.REQ)
     socket.identity = u"Worker-{}".format(ident).encode("ascii")
@@ -307,13 +308,15 @@ def worker_task_greedyexec(ident, broker_port, broker_addr, package, wf, ssh_pke
 
             dname = hashlib.md5(id_task).hexdigest()
         #     cache_data_path = os.path.join(cp.cache_dir, "data", dname)
-
+            p = re.compile('\(\d*\,')
+            m = p.findall(id_task)
+            workflow = m[0][1:-1]
             intermediate_data_path = index.is_in(id_task)
             if intermediate_data_path:
                 # GIVE REF! Not data
                 print("LOAD DATA")
                 dtime = time.time()
-                tmp_data = Data(id=id_task, value=None)
+                tmp_data = Data(id=id_task, value=None, workflow=workflow)
                 dsize = 0
             else:
                 # download data from refs:
@@ -324,6 +327,7 @@ def worker_task_greedyexec(ident, broker_port, broker_addr, package, wf, ssh_pke
                                 path_to_data = index.is_in(data.id)
                                 tmp_data = load_intermediate_data_local(data_path=path_to_data)
                                 data.value = tmp_data.value
+                                data.workflow = workflow
                             except:
                                 pass
                             
@@ -657,6 +661,7 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
         from openalea.phenomenal.segmentation import \
         (maize_segmentation, graph_from_voxel_grid, segment_reduction, skeletonize,
         maize_analysis)
+        import re
 
 
         def save_infos(prov=None, data=None, wf=0):
@@ -700,16 +705,19 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
             start = time.time()
             # retreive intermediate data if it exist and execute the act otherwise
             id_task = get_task_id(func, *args, **kwargs)
-
             dname = hashlib.md5(id_task).hexdigest()
-        #     cache_data_path = os.path.join(cp.cache_dir, "data", dname)
+            p = re.compile('\(\d*\,')
+            m = p.findall(id_task)
+            workflow = m[0][1:-1]
+
             intermediate_data_path = index.is_in(id_task)
             if intermediate_data_path:
                 # GIVE REF! Not data
-                print("LOAD DATA")
+                print("LOAD DATA", intermediate_data_path)
                 dtime = time.time()
-                tmp_data = Data(id=id_task, value=None)
-                dsize = 0
+                fake_data = load_intermediate_data_local(data_path=intermediate_data_path)
+                tmp_data = Data(id=id_task, value=fake_data, workflow=workflow)
+                end = time.time()
             else:
                 # download data from refs:
                 for data in args:
@@ -719,6 +727,7 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
                                 path_to_data = index.is_in(data.id)
                                 tmp_data = load_intermediate_data_local(data_path=path_to_data)
                                 data.value = tmp_data.value
+                                data.workflow = workflow
                             except:
                                 pass
                             
@@ -726,26 +735,31 @@ def worker_task_fakeload(ident, broker_port, broker_addr, package, wf, ssh_pkey)
                     print("COMPUTE DATA")
                     tmp_data = execute(func, *args, **kwargs)
                     dtime = time.time()
+                    end = time.time()
 
-                print('ADD to cache')
-                # get name of file: 
-                pathcache = "/home/ubuntu/openalea/"
-                dname = hashlib.md5(str(id_task)).hexdigest()
-                pathcache = os.path.join(pathcache, dname)
-                write_intermediate_data_local(tmp_data, pathcache)
-                index.add_data(data_id=str(id_task), path=pathcache)
-
+                # print('ADD to cache')
+                # # get name of file: 
+                # pathcache = "/home/ubuntu/openalea/"
+                # dname = hashlib.md5(str(id_task)).hexdigest()
+                # pathcache = os.path.join(pathcache, dname)
+                # write_intermediate_data_local(tmp_data, pathcache)
+                # index.add_data(data_id=str(id_task), path=pathcache)
+            # fake write: 
+            print('rewrite')
+            pathcache = "/home/ubuntu/openalea/"
+            dname = hashlib.md5(str(id_task)).hexdigest()
+            pathcache = os.path.join(pathcache, dname)
+            write_intermediate_data_local(tmp_data, pathcache)
         #     dsize=0
             dsize = getsize(tmp_data.value)
             tmp_data.size = dsize
             tmp_data.time = time.time() - start
             tmp_data.cpu_time = dtime - start
-            tmp_data.dltime = time.time() - dtime
+            tmp_data.dltime = end - dtime
             return tmp_data
+
         print("start execution ...")
         start = time.time()
-
-
 
         try:
             # Connect to ProvDB
