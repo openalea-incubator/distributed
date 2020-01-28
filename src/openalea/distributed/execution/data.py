@@ -32,7 +32,7 @@ def set_id(data):
             data.id = new_id
         else:
             new_id = ""
-            new_id += str(data.workflow)
+            # new_id += str(data.workflow)
             new_id += data.func_name
             new_id += "("
             for parent in data.parents:

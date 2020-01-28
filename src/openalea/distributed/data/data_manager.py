@@ -1,7 +1,9 @@
 import dill
 import os
-from openalea.distributed.cloud_infos.cloud_infos import CACHE_PATH, TMP_PATH
 from openalea.distributed.index.id import get_id
+import errno
+from openalea.distributed.execution.data import Data
+
 
 def write_data(data_id, data, path):
     """
@@ -10,14 +12,6 @@ def write_data(data_id, data, path):
     """
     with open(os.path.join(path,data_id), "w") as f:
         dill.dump(data, f)
-
-
-# def write_outputs(data_id, cache_path):
-#     for port in range(df.node(vid).get_nb_output()):
-#         data_id = get_id(vid, port)
-#         with open(os.path.join(cache_path,data_id), "w") as f:
-#             dill.dump(df.node(vid).get_output(port), f)
-
 
 def load_data(path):
     """
@@ -104,15 +98,16 @@ def load_intermediate_data_ssh(data_path, sftp_client=None):
     return new_data
 
 
-def write_intermediate_data(data, dname, data_path, method="local", sftp_client=None):
+def write_intermediate_data(data, dname, data_path, method="local", sftp_client=None, *args, **kwargs):
     if method == "ssh":
         return write_intermediate_data_ssh(data, dname, data_path, sftp_client=sftp_client)
-
     if method == "local":
         return write_intermediate_data_local(data, data_path)
-    
     if method == "sshfs":
         return write_intermediate_data_local(data, data_path)
+    if method == "IRODS":
+        return write_intermediate_data_irods(data, dname, data_path, irods_sess=kwargs.get("irods_sess"))
+    
 
 
 def load_intermediate_data(dname, data_path, method="local", sftp_client=None):
@@ -120,6 +115,49 @@ def load_intermediate_data(dname, data_path, method="local", sftp_client=None):
         return load_intermediate_data_ssh(dname, data_path, sftp_client=sftp_client)
     if method == "local":
         return load_intermediate_data_local(data_path)
-    
     if method == "sshfs":
         return load_intermediate_data_local(data_path)
+    if method == "IRODS":
+        return load_intermediate_data_irods(dname, data_path, irods_sess=kwargs.get("irods_sess"))
+
+def create_dir(path):
+    try:
+        os.makedirs(path)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
+
+
+# TODO: send to irods through memory / not after persist on local
+def write_intermediate_data_irods(data, dname, cache_data_path, irods_sess=None):
+    tmp_path = pkg_resources.resource_filename(
+        'openalea.distributed', 'execution/tmp_data_' + dname)
+    # pickle it
+    write_intermediate_data_local(data, tmp_path)
+
+    if not irods_sess.data_objects.exists(cache_data_path):
+        irods_sess.data_objects.create(cache_data_path)
+    obj=irods_sess.data_objects.get(cache_data_path)
+    # delete the previous cache file
+    with obj.open("w"):
+        pass
+    copy_local_file_to_data_object(tmp_path, obj)
+
+
+def load_intermediate_data_irods(dname, cache_path, irods_sess=None):
+    obj = irods_sess.data_objects.get(cache_path)
+    tmp_path = pkg_resources.resource_filename(
+            'openalea.distributed', 'execution/tmp_data_' + dname)
+    # tmp_path = "/home/gaetan/OpenAlea/distributed/cache_data/tmp/tmp_data"
+    #get the file from irods in a tmp file
+    copy_data_object_to_file(obj, tmp_path)
+    #unpickle it
+    with open(tmp_path, 'rb') as f:
+        res = dill.load(f)
+
+    #delete tmp_file
+    if os.path.isfile(tmp_path):
+        os.remove(tmp_path)
+    else:  ## Show an error ##
+        print("Error: %s file not found" % tmp_path)
+    return res
